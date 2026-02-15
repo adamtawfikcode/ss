@@ -29,7 +29,7 @@ const pieData = [
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
-const StatCard = ({ title, value, icon, trend }) => (
+const StatCard = ({ title, value, icon, trend }: { title: string, value: string, icon: React.ReactNode, trend?: string }) => (
   <motion.div 
     className="bg-gray-800/50 backdrop-blur-sm p-6 rounded-xl border border-gray-700 hover:border-blue-500 transition-all duration-300 glow-pulse"
     whileHover={{ y: -5 }}

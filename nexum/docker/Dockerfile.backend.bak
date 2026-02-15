@@ -3,7 +3,7 @@
 # CPU build (default):  docker build --build-arg TORCH_INDEX=cpu ...
 # GPU build (RTX 5070 Ti):  docker build --build-arg TORCH_INDEX=cu124 ...
 
-FROM python:3.11-slim-bookworm
+FROM python:3.11-slim
 
 ARG TORCH_INDEX=cpu
 
@@ -13,11 +13,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     tesseract-ocr \
     tesseract-ocr-eng \
     tesseract-ocr-ara \
+    libgl1-mesa-glx \
     libglib2.0-0 \
     libsm6 \
     libxext6 \
     libxrender1 \
-    libgomp1 \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
@@ -25,7 +25,7 @@ WORKDIR /app
 
 # PyTorch — install from the appropriate index (cpu or cu124)
 RUN pip install --no-cache-dir \
-    torch torchvision --index-url https://download.pytorch.org/whl/ ${TORCH_INDEX}
+    torch torchvision --index-url https://download.pytorch.org/whl/${TORCH_INDEX}
 
 # Python dependencies
 RUN pip install --no-cache-dir \
