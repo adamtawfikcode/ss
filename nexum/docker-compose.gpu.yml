@@ -1,0 +1,31 @@
+# Nexum GPU Override — adds NVIDIA GPU access to processing services
+# Usage: docker compose -f docker-compose.yml -f docker-compose.gpu.yml up -d
+#
+# Prerequisites:
+#   - NVIDIA Container Toolkit installed
+#   - Build with: docker compose build --build-arg TORCH_INDEX=cu124
+
+services:
+  api:
+    build:
+      args:
+        TORCH_INDEX: cu124
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  worker-processing:
+    build:
+      args:
+        TORCH_INDEX: cu124
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

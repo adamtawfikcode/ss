@@ -1,0 +1,43 @@
+# Nexum Priority Rules Configuration
+# Controls how videos are scored for crawl priority
+
+# Weight multipliers for priority formula:
+# score = (views * weight_views) + (recency * weight_recency)
+#         - duration_penalty + keyword_boost + engagement_boost + tier_boost
+
+weight_views: 1.0
+weight_recency: 0.5
+
+# Minimum thresholds to accept a video
+min_views: 100
+min_duration_seconds: 30
+max_duration_seconds: 14400  # 4 hours
+
+# Keyword boosts: if title contains keyword, add boost to priority score
+keyword_boosts:
+  tutorial: 10
+  explained: 8
+  review: 5
+  how to: 7
+  deep dive: 8
+  breakdown: 6
+  analysis: 6
+  podcast: 4
+  interview: 5
+  debate: 5
+  gaming: 3
+  gameplay: 3
+
+# Language filter (empty = accept all)
+accepted_languages: []
+
+# Upload age filter (days) — ignore videos older than this
+max_age_days: 365
+
+# Channel tier multipliers
+tier_multipliers:
+  1: 1.0
+  2: 1.5
+  3: 2.0
+  4: 3.0
+  5: 5.0
