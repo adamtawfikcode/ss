@@ -1,0 +1,51 @@
+# Nexum Multimodal Fusion Weights (v3 — 10 Modalities)
+# These weights control how different modalities contribute to the final score
+#
+# Formula:
+# final_score = (text_semantic * w1) + (visual_similarity * w2) +
+#               (ocr_match * w3) + (keyword_match * w4) +
+#               (temporal_coherence * w5) + (emotion_context * w6) +
+#               (comment_semantic * w7) + (comment_timestamp_boost * w8) +
+#               (agreement_cluster * w9) + (entity_overlap * w10) +
+#               (user_cluster_confidence * w11) +
+#               confidence_weighting
+#
+# Weights should roughly sum to 1.0
+# Adjusted automatically by the feedback loop (daily recalibration)
+
+weights:
+  # Original modalities (v1/v2)
+  text_semantic: 0.25        # Transcript semantic similarity
+  visual_similarity: 0.15    # CLIP visual similarity
+  ocr_match: 0.10            # On-screen text/number match
+  keyword_match: 0.10        # Exact keyword presence in transcript
+  temporal_coherence: 0.08   # Adjacent segment consistency boost
+  emotion_context: 0.02      # Emotional tone alignment
+
+  # Social Knowledge Graph modalities (v3)
+  comment_semantic: 0.10     # Comment text similarity to query
+  comment_timestamp_boost: 0.05  # Comments referencing same timestamp
+  agreement_cluster: 0.05    # Sentiment consensus among commenters
+  entity_overlap: 0.05       # Shared entities between query and content
+  user_cluster_confidence: 0.05  # More unique discussants = higher signal
+
+# Confidence weighting formula:
+# adjusted_score = score * (0.7 + 0.3 * confidence)
+confidence_floor: 0.7
+confidence_scale: 0.3
+
+# Recalibration settings
+recalibration:
+  enabled: true
+  schedule: "daily"          # daily, weekly, manual
+  min_feedback_count: 10     # Minimum feedback before adjusting
+  learning_rate: 0.02        # Step size per adjustment
+  min_weight: 0.05           # No weight drops below this
+  max_weight: 0.50           # No weight exceeds this
+
+# Modality-specific thresholds for inclusion in results
+inclusion_thresholds:
+  text_semantic: 0.25
+  visual_similarity: 0.15
+  ocr_match: 0.30
+  keyword_match: 0.0

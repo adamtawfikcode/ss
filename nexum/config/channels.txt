@@ -1,0 +1,61 @@
+# Nexum Channel / Account Seed List
+# Format: url | priority_tier (1-5, higher = more frequent crawling)
+#
+# Supports: YouTube, TikTok, Twitter/X, Instagram, Twitch, Vimeo,
+#           Dailymotion, Reddit, Facebook, Bilibili, and 1700+ more via yt-dlp
+#
+# Priority Tiers:
+#   5 = Critical — crawl every cycle
+#   4 = High — crawl every 2 cycles
+#   3 = Medium — crawl every 5 cycles
+#   2 = Low — crawl daily
+#   1 = Minimal — crawl weekly
+#
+# Add channels/accounts below, one per line:
+
+# ═══════════════════════════════════════════════════════════════════════
+# YouTube
+# ═══════════════════════════════════════════════════════════════════════
+
+# ── Tech & Programming ──────────────────────────────────
+https://www.youtube.com/@3blue1brown | 4
+https://www.youtube.com/@Fireship | 3
+https://www.youtube.com/@ThePrimeTimeagen | 3
+https://www.youtube.com/@computerphile | 3
+
+# ── AI & ML ──────────────────────────────────────────────
+https://www.youtube.com/@TwoMinutePapers | 4
+https://www.youtube.com/@YannicKilcher | 3
+
+# ── Science & Education ─────────────────────────────────
+https://www.youtube.com/@Vsauce | 3
+https://www.youtube.com/@veritasium | 3
+https://www.youtube.com/@SmarterEveryDay | 2
+
+# ── Gaming ───────────────────────────────────────────────
+# https://www.youtube.com/@example-gaming | 2
+
+# ── Podcasts ─────────────────────────────────────────────
+# https://www.youtube.com/@example-podcast | 2
+
+# ═══════════════════════════════════════════════════════════════════════
+# TikTok
+# ═══════════════════════════════════════════════════════════════════════
+# https://www.tiktok.com/@example-tech | 3
+# https://www.tiktok.com/@example-science | 2
+
+# ═══════════════════════════════════════════════════════════════════════
+# Twitter / X
+# ═══════════════════════════════════════════════════════════════════════
+# https://twitter.com/example-account | 2
+# https://x.com/example-account | 2
+
+# ═══════════════════════════════════════════════════════════════════════
+# Twitch (VODs)
+# ═══════════════════════════════════════════════════════════════════════
+# https://www.twitch.tv/example-streamer/videos | 2
+
+# ═══════════════════════════════════════════════════════════════════════
+# Vimeo / Other
+# ═══════════════════════════════════════════════════════════════════════
+# https://vimeo.com/example-channel | 1

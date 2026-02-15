@@ -1,0 +1,109 @@
+# Nexum Model Registry
+# Quality-first: all defaults are the highest-accuracy option.
+# For RTX 5070 Ti (12 GB), models run sequentially to stay within VRAM.
+
+speech_to_text:
+  active: whisper-large-v3
+  models:
+    whisper-tiny:
+      name: "faster-whisper"
+      size: "tiny"
+      vram_gb: 0.3
+      languages: ["en"]
+      speed: "fastest"
+      accuracy: "low"
+    whisper-base:
+      name: "faster-whisper"
+      size: "base"
+      vram_gb: 0.5
+      languages: ["en", "ar", "es", "fr", "de", "zh", "ja"]
+      speed: "fast"
+      accuracy: "medium"
+    whisper-medium:
+      name: "faster-whisper"
+      size: "medium"
+      vram_gb: 1.5
+      languages: "all"
+      speed: "medium"
+      accuracy: "high"
+    whisper-large-v3:
+      name: "faster-whisper"
+      size: "large-v3"
+      vram_gb: 3.0
+      languages: "all"
+      speed: "slow"
+      accuracy: "highest"
+      beam_size: 10
+      best_of: 5
+      note: "Default — best accuracy, 99 languages"
+
+text_embedding:
+  active: all-mpnet-base-v2
+  models:
+    all-MiniLM-L6-v2:
+      dimension: 384
+      vram_gb: 0.1
+      speed: "fastest"
+      accuracy: "good"
+    all-mpnet-base-v2:
+      dimension: 768
+      vram_gb: 0.4
+      speed: "medium"
+      accuracy: "best"
+      note: "Default — highest quality general-purpose text embeddings"
+    bge-small-en-v1.5:
+      dimension: 384
+      vram_gb: 0.1
+      speed: "fast"
+      accuracy: "good"
+
+visual_embedding:
+  active: ViT-L-14
+  models:
+    ViT-B-32:
+      pretrained: "openai"
+      dimension: 512
+      vram_gb: 0.6
+      speed: "fast"
+      accuracy: "good"
+    ViT-B-16:
+      pretrained: "openai"
+      dimension: 512
+      vram_gb: 0.8
+      speed: "medium"
+      accuracy: "better"
+    ViT-L-14:
+      pretrained: "openai"
+      dimension: 768
+      vram_gb: 1.8
+      speed: "slow"
+      accuracy: "best"
+      note: "Default — highest accuracy zero-shot classification + embeddings"
+
+ocr:
+  engines:
+    - name: "easyocr"
+      type: "neural"
+      languages: ["en", "ar"]
+    - name: "tesseract"
+      type: "traditional"
+      languages: ["eng", "ara"]
+  confidence_threshold: 0.30
+  temporal_smoothing_window: 3
+  note: "Dual-engine with consensus scoring; Arabic + English"
+
+vision:
+  classification_method: "clip_zero_shot"
+  min_tag_confidence: 0.06
+  max_tags_per_frame: 15
+  blur_threshold: 15.0
+  top_k_per_category: 7
+
+# ── VRAM Budget (RTX 5070 Ti 12 GB) ─────────────────────
+# Sequential loading ensures we never exceed VRAM:
+#   Phase 1: Whisper large-v3        ~3.0 GB
+#   Phase 2: CLIP ViT-L-14           ~1.8 GB
+#            + text embeddings        ~0.4 GB
+#            + EasyOCR                ~0.8 GB
+#            = ~3.0 GB total
+# Peak VRAM: ~3.0 GB (well within 12 GB budget)

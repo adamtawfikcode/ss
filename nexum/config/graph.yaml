@@ -1,0 +1,74 @@
+# Nexum — Social Knowledge Graph Configuration
+# Controls comment ingestion, NLP processing, and graph visualization
+
+comment_ingestion:
+  top_n_comments: 200
+  max_reply_depth: 20
+  min_likes_threshold: 0
+  min_reply_likes_threshold: 0
+  rate_limit_delay_seconds: 1.5
+  ingest_interval_seconds: 600
+  batch_size: 50
+
+spam_filtering:
+  spam_threshold: 0.75
+  toxicity_threshold: 0.80
+  engagement_threshold_replies: 0
+  max_urls_per_comment: 3
+  max_caps_ratio: 0.7
+
+nlp_processing:
+  sentiment_model: "cardiffnlp/twitter-roberta-base-sentiment-latest"
+  ner_model: "en_core_web_sm"
+  topic_labels:
+    - technology
+    - science
+    - gaming
+    - music
+    - sports
+    - politics
+    - education
+    - entertainment
+    - finance
+    - health
+    - cooking
+    - travel
+    - art
+    - nature
+    - history
+    - comedy
+    - news
+  entity_co_occurrence_window: 5
+  min_entity_mentions: 2
+
+graph_visualization:
+  max_visible_nodes: 1000
+  sample_size: 500
+  event_buffer_size: 1000
+  node_shapes:
+    Video: rectangle
+    Comment: ellipse
+    CommentAuthor: ellipse
+    Entity: hexagon
+    Topic: hexagon
+    Channel: diamond
+  node_colors:
+    Video: "#d4a843"
+    Comment: "#6b7280"
+    CommentAuthor: "#3b82f6"
+    Entity: "#10b981"
+    Topic: "#8b5cf6"
+    Channel: "#ef4444"
+
+storage_rules:
+  compress_comments_above_chars: 2000
+  prune_inactive_users_after_days: 180
+  deduplicate_spam: true
+  max_embeddings_per_video: 10000
+
+neo4j:
+  uri: "bolt://neo4j:7687"
+  user: "neo4j"
+  password: "nexum_graph_secret"
+  database: "neo4j"
+  max_pool_size: 50

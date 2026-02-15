@@ -1,0 +1,50 @@
+# Nexum System Limits
+# Quality-first: dense sampling, high model accuracy, generous caps
+
+crawler:
+  max_concurrent_downloads: 4
+  rate_limit_delay_seconds: 2.0
+  max_retries: 5
+  retry_delay_seconds: 60
+  crawl_interval_seconds: 300
+  max_videos_per_channel_per_cycle: 30
+  request_timeout_seconds: 60
+
+processing:
+  max_video_duration_seconds: 14400      # 4 hours
+  min_video_duration_seconds: 5          # TikTok/Shorts support
+  frame_sample_interval_seconds: 1.5     # dense: every 1.5s
+  segment_duration_seconds: 15
+  segment_overlap_seconds: 2.0           # context continuity
+  max_frames_per_video: 5000             # ~2 hours at 1.5s interval
+  max_segments_per_video: 10000
+  download_format_youtube: "bestvideo[height<=1080]+bestaudio/best[height<=1080]"
+  download_format_tiktok: "best"
+  download_format_generic: "bestvideo+bestaudio/best"
+  audio_sample_rate: 16000
+  processing_timeout_seconds: 7200
+
+search:
+  top_k_initial: 150
+  top_k_rerank: 20
+  max_page_size: 100
+  default_page_size: 20
+  cache_ttl_seconds: 300
+  max_query_length: 1024
+
+api:
+  rate_limit_per_minute: 60
+  max_request_size_mb: 10
+  cors_origins: ["*"]
+
+storage:
+  max_transcript_length: 100000
+  vector_precision: "float16"
+  dedup_similarity_threshold: 0.98
+  cleanup_temp_after_hours: 24
+
+workers:
+  processing_queue_concurrency: 1        # sequential GPU
+  crawler_queue_concurrency: 1
+  soft_time_limit_seconds: 3600
+  hard_time_limit_seconds: 7200

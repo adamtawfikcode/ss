@@ -1,0 +1,53 @@
+# Nexum Backend Dockerfile
+#
+# CPU build (default):  docker build --build-arg TORCH_INDEX=cpu ...
+# GPU build (RTX 5070 Ti):  docker build --build-arg TORCH_INDEX=cu124 ...
+
+FROM python:3.11-slim
+
+ARG TORCH_INDEX=cpu
+
+# System deps: FFmpeg, Tesseract (English + Arabic), OpenCV libs
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ffmpeg \
+    tesseract-ocr \
+    tesseract-ocr-eng \
+    tesseract-ocr-ara \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender1 \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# PyTorch — install from the appropriate index (cpu or cu124)
+RUN pip install --no-cache-dir \
+    torch torchvision --index-url https://download.pytorch.org/whl/${TORCH_INDEX}
+
+# Python dependencies
+RUN pip install --no-cache-dir \
+    fastapi[standard] uvicorn[standard] sqlalchemy[asyncio] asyncpg alembic \
+    celery[redis] redis httpx yt-dlp pydantic pydantic-settings \
+    transformers sentence-transformers open-clip-torch \
+    faster-whisper easyocr pytesseract \
+    Pillow opencv-python-headless numpy scipy scikit-learn \
+    qdrant-client minio pyyaml python-multipart \
+    passlib[bcrypt] python-jose[cryptography] \
+    structlog prometheus-client tenacity
+
+# Copy application
+COPY backend/app ./app
+COPY backend/alembic.ini .
+COPY backend/migrations ./migrations
+COPY config /app/config
+
+# Create temp directory
+RUN mkdir -p /tmp/nexum
+
+EXPOSE 8000
+
+# Default: run API server
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]
